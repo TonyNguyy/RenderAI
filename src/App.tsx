@@ -66,13 +66,17 @@ const App = () => {
     dangerouslyAllowBrowser: true
   });
 
+  const handleChange = (e: FormEvent)=> {
+    const target = e.target as HTMLInputElement;
+    setPrompt(target.value);
+  }
 
   const generateImage = async (e: FormEvent) =>{
     e.preventDefault()
     setLoading(true)
     try {
       const res = await openai.images.generate({
-        prompt: "A house on mars",
+        prompt: prompt,
         n:1,
         size:"512x512",
       })
@@ -92,15 +96,16 @@ const App = () => {
   }
   return (
     <div className="w-screem h-screen bg-black flex justify-center
-    items-center flex-col p-5 text-center">
+    items-center flex-col p-10 text-center">
+      <h6 className="text-2xl text-white semi-bold mb-4">Welcome to </h6>
      <h1 className="text-5xl font-bold
      bg-gradient-to-r from-pink-500 via-yellow-300 to-green-300
-     text-transparent bg-clip-text uppercase">AI Image Generator</h1>
+     text-transparent bg-clip-text uppercase mb-3 animate-pulse">Render-AI</h1>
     <span className="text-white semi-bold">Create Images using Artificial Intelligence</span>
     
 
     <form className="mt-10 flex">
-      <input type="text" placeholder={placeholder} className="w-80 rounded-md px-1" />
+      <input value={prompt} onChange={handleChange} type="text" placeholder={placeholder} className="w-80 rounded-md px-1" />
       <button className="" onClick={generateImage}>
         <span className="bg-gradient-to-r from-pink-500 via-yellow-300 to-green-300
      text-transparent bg-clip-text uppercase mx-4 py-1 px-3 text-xl cursor-pointer bold">Create ✨</span>
@@ -114,7 +119,7 @@ const App = () => {
         <></>
       )}
 
-      {result.length > 0 ? <img className="mt-10" src={result} alt="Generated Image" /> : <></>}
+      {result.length > 0 ? <img className="mt-10 mb-2" src={result} alt="Generated Image" /> : <></>}
 
 
     </div>
